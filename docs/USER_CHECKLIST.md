@@ -42,7 +42,12 @@ cd C:\Users\diamo\Projects\sentinelops
 python scripts/check_mcp_health.py
 ```
 
-- [ ] **`official_mcp.ok`** should become **`true`** (currently `false` / Not Found)
+- [ ] **`splunk_rest.ok`** and **`bridge_ping.ok`** should be **true**
+- [ ] **`official_mcp.ok`** needs a **separate MCP encrypted token** (see below)
+
+### If `official_mcp` says "Invalid token audience"
+
+The MCP app is installed, but your REST/hackathon token is not valid for MCP. In Splunk Web → **Splunk MCP Server app** → create an **encrypted MCP token** → add to `.env` as `SPLUNK_MCP_TOKEN`. Re-run health check until `official_mcp.ok: true`. Until then, REST + bridge work for your demo.
 
 Optional but valuable:
 
