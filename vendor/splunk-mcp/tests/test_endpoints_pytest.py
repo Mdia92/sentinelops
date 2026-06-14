@@ -468,8 +468,8 @@ async def test_splunk_token_auth():
             "SPLUNK_HOST": "token-host",
             "SPLUNK_PORT": "9999",
             "SPLUNK_TOKEN": "test-token",
-            "SPLUNK_USERNAME": "should-not-be-used",
-            "SPLUNK_PASSWORD": "should-not-be-used"
+            "SPLUNK_USERNAME": "ignored-in-token-mode",
+            "SPLUNK_PASSWORD": "ignored-in-token-mode",
         }):
             importlib.reload(splunk_mcp)
             splunk_mcp.get_splunk_connection()
