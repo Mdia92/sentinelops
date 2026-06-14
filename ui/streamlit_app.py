@@ -17,7 +17,7 @@ from integrations.splunk_client import SplunkClient
 from memory.chroma_store import IncidentMemory
 from models.contracts import ApprovalDecision
 
-load_dotenv(ROOT / ".env")
+load_dotenv(ROOT / ".env", override=True)
 
 st.set_page_config(page_title="SentinelOps", page_icon="🛡️", layout="wide")
 
@@ -37,6 +37,9 @@ st.markdown(
 
 st.title("SentinelOps")
 st.caption("The autonomous self-healing SRE that closes the loop and compounds.")
+
+if os.getenv("SPLUNK_USE_MOCK", "false").lower() == "true":
+    st.info("Demo mode: using local sample data (Streamlit Cloud cannot reach localhost Splunk).")
 
 if "agent_state" not in st.session_state:
     st.session_state.agent_state = None

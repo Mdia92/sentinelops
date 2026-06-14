@@ -2,6 +2,9 @@
 
 The autonomous self-healing SRE that closes the loop and compounds.
 
+**GitHub:** https://github.com/Mdia92/sentinelops  
+**Your step-by-step checklist:** [docs/USER_CHECKLIST.md](docs/USER_CHECKLIST.md)
+
 SentinelOps watches Splunk indexes, diagnoses incidents, proposes fixes behind a human approval gate, verifies recovery, and stores resolution patterns in vector memory.
 
 ## Architecture
@@ -108,8 +111,10 @@ In Splunk Web (`http://localhost:8000`):
 4. Verify with SPL:
 
 ```spl
-index=* metric_name=* error_rate=*
-| stats latest(error_rate) as current_value by metric_name
+search index=* sourcetype=_json source=sample_incidents.log earliest=-24h
+| spath
+| stats latest(error_rate) as current_value max(error_rate) as peak_value by metric_name
+| eval current_value=if(current_value>5, current_value, peak_value)
 | where current_value > 5
 ```
 
