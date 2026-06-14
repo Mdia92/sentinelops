@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.env
+.chroma/
+.venv/
+venv/
+.streamlit/secrets.toml
+*.log
+!sample_incidents.log
+.DS_Store
