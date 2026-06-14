@@ -70,8 +70,16 @@ def check_official_mcp(url: str, token: str) -> dict:
             timeout=15,
             verify=False,
         )
-        result["ok"] = response.status_code == 200
-        result["detail"] = response.text[:500]
+        body = response.text[:500]
+        result["detail"] = body
+        if response.status_code == 200:
+            result["ok"] = True
+        elif response.status_code == 403 and "Invalid token audience" in body:
+            result["detail"] = (
+                "MCP app is installed but token is wrong type. "
+                "Create an encrypted MCP token in Splunk Web → Splunk MCP Server app "
+                "(not the generic REST/hackathon token). " + body
+            )
     except Exception as exc:
         result["detail"] = str(exc)
     return result

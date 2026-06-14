@@ -128,8 +128,14 @@ with center:
 
 with right:
     st.subheader("System Status")
-    client = SplunkClient()
-    st.write(f"Splunk backend: **{client.status}**")
+    if state and state.mcp_status != "unknown":
+        st.write(f"Splunk backend: **{state.mcp_status}**")
+    else:
+        probe = SplunkClient()
+        probe.run_search()
+        st.write(f"Splunk backend: **{probe.last_backend} active**")
+    bridge_url = os.getenv("SPLUNK_MCP_BRIDGE_URL", "http://localhost:8765")
+    st.write(f"MCP bridge: **{bridge_url}**")
     with open(ROOT / "policy.yaml", "r", encoding="utf-8") as handle:
         policy = yaml.safe_load(handle)
     st.write("Policy rules active:")
