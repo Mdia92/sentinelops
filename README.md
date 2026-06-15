@@ -111,7 +111,7 @@ In Splunk Web (`http://localhost:8000`):
 4. Verify with SPL:
 
 ```spl
-search index=* sourcetype=_json source=sample_incidents.log earliest=-24h
+search index=* sourcetype=_json source=sample_incidents.log earliest=-7d
 | spath
 | stats latest(error_rate) as current_value max(error_rate) as peak_value by metric_name
 | eval current_value=if(current_value>5, current_value, peak_value)

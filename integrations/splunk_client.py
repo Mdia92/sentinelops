@@ -164,7 +164,7 @@ class SplunkClient:
                         rows.append(json.loads(line))
             return rows[-minutes:] if len(rows) > minutes else rows
 
-        query = "search index=* sourcetype=_json source=sample_incidents.log earliest=-24h | spath | head 100"
+        query = "search index=* sourcetype=_json source=sample_incidents.log earliest=-7d | spath | head 100"
         return self.run_search(query)
 
     def get_metric_value(self, metric_name: str) -> float | None:
@@ -180,7 +180,7 @@ class SplunkClient:
             return None
 
         query = (
-            f"search index=* sourcetype=_json earliest=-24h "
+            f"search index=* sourcetype=_json earliest=-7d "
             f"| spath metric_name | search metric_name={metric_name} "
             f"| stats latest(error_rate) as current_value"
         )
